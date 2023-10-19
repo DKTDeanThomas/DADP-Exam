@@ -6,7 +6,8 @@ using UnityEngine.UI;
 public class BinaryPuzzle : MonoBehaviour
 {
     [SerializeField] private Dictionary<string, string> binaryEncoding = new Dictionary<string, string>();//when players provide binary number to get specific letter
-    [SerializeField] private Dictionary<string, string> binaryDecoding = new Dictionary<string, string>();//when players provide binary number to verify letter already 
+    [SerializeField] private Dictionary<string, string> binaryDecoding = new Dictionary<string, string>();//when players provide binary number to verify letter already
+    [SerializeField] private Dictionary<string, string> binaryDecrypt = new Dictionary<string, string>();// used when players add the binary nu bers that will be stored in here to formulate the word.
     [SerializeField] private Image InvalidInputImage;
     [SerializeField] private Image SuccessfulImage;
     [SerializeField] private Image VerificationImageA1;
@@ -23,6 +24,8 @@ public class BinaryPuzzle : MonoBehaviour
 
         AssignLetterstoBinaryNumber();
         AssignBinaryNumberstoLetters();
+        AdditionofBinaryNumbers();
+
 
     }
     public void AssignBinaryNumberstoLetters()
@@ -39,10 +42,14 @@ public class BinaryPuzzle : MonoBehaviour
         binaryDecoding.Add("01110010", "r");
 
     }
+    public void AdditionofBinaryNumbers()
+    {
+        binaryDecrypt.Add("01000001 + 01100010 + 01100001 + 01110010 + 01100001_2", "Abara");
 
+    }
     public void Lettercheck(string inputBinary1)
     {
-      
+
 
         if (binaryEncoding.ContainsKey(inputBinary1))
         {
@@ -52,7 +59,7 @@ public class BinaryPuzzle : MonoBehaviour
             Debug.Log("Input: " + inputBinary1);
             Debug.Log("Binary code from dictionary: " + binaryEncoding[inputBinary1]);
             ShowImage(SuccessfulImage);
-            binaryLetter.EnableLetter1();
+            // binaryLetter.EnableLetter1();
             if (letter == "A")
             {
                 binaryLetter.EnableLetter1();
@@ -103,7 +110,7 @@ public class BinaryPuzzle : MonoBehaviour
 
     public void NumberCheck(string inputBinary2)
     {
-       
+
         Debug.Log("Entered NumberCheck with input: " + inputBinary2);
 
         if (binaryDecoding.ContainsKey(inputBinary2))
@@ -133,47 +140,12 @@ public class BinaryPuzzle : MonoBehaviour
             Debug.Log("Binary code not found in dictionary");
         }
     }
-
-
-
-
-    public void WordFormulate()
+    public void WordFormulate(string inputAddition)
     {
-        string targetWord = "Abara"; // word to formulated after letters have been retrieved
-        string binaryResult = ""; // Initialize an empty binary numbers stored as a string when inputted by player
-
-        foreach (char letter in targetWord)
+        if (binaryDecrypt.ContainsKey(inputAddition))
         {
-            if (binaryDecoding.TryGetValue(letter.ToString(), out string binaryCode))
-            {
-                binaryResult += binaryCode;
-            }
-            else
-            {
-                Debug.Log("Invalid letter found in the target word.");
-                return; 
-            }
+            binaryLetter.EnableFullWord();
+            Debug.Log("binary numbers have been added correctly and match the word that needs to be formulated");
         }
-
-        string finalWord = ""; //initialization of  the result word
-
-        // Convert binaryResult to letters using 8-bit chunks bc 1 byte = 8 binary digits.
-        for (int i = 0; i < binaryResult.Length; i += 8)
-        {
-            string chunk = binaryResult.Substring(i, 8);
-            if (binaryEncoding.TryGetValue(chunk, out string letter))
-            {
-                finalWord += letter;//add the letters to the final word
-            }
-            else
-            {
-                Debug.Log("Invalid binary chunk found in the binary representation.");
-                return; 
-            }
-        }
-
-        Debug.Log("Resulting word: " + finalWord);// this should be the same if the player has the inputted the correct binary codes i.e so Abara.
-        binaryLetter.EnableFullWord();
     }
-
 }
