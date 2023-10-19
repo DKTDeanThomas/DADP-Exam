@@ -20,6 +20,10 @@ public class BinaryPuzzle : MonoBehaviour
     {
         InvalidInputImage.gameObject.SetActive(false);
         SuccessfulImage.gameObject.SetActive(false);
+
+        AssignLetterstoBinaryNumber();
+        AssignBinaryNumberstoLetters();
+
     }
     public void AssignBinaryNumberstoLetters()
     {
@@ -38,6 +42,7 @@ public class BinaryPuzzle : MonoBehaviour
 
     public void Lettercheck(string inputBinary1)
     {
+      
 
         if (binaryEncoding.ContainsKey(inputBinary1))
         {
@@ -47,6 +52,7 @@ public class BinaryPuzzle : MonoBehaviour
             Debug.Log("Input: " + inputBinary1);
             Debug.Log("Binary code from dictionary: " + binaryEncoding[inputBinary1]);
             ShowImage(SuccessfulImage);
+            binaryLetter.EnableLetter1();
             if (letter == "A")
             {
                 binaryLetter.EnableLetter1();
@@ -82,7 +88,6 @@ public class BinaryPuzzle : MonoBehaviour
         {
             return; //goes according to the specific image being shown depending on the players' binary number inputs' validity.
         }
-
         isDisplayingImage = true;
         image.gameObject.SetActive(true);
         StartCoroutine(HideImage(image));
@@ -101,23 +106,21 @@ public class BinaryPuzzle : MonoBehaviour
        
         Debug.Log("Entered NumberCheck with input: " + inputBinary2);
 
-        if (binaryDecoding.ContainsValue(inputBinary2))
+        if (binaryDecoding.ContainsKey(inputBinary2))
         {
-            inputBinary2 = inputBinary2.Trim();
             Debug.Log("Valid code found in dictionary");
-
             string binaryNumber = binaryDecoding[inputBinary2];
-            Debug.Log("Letter: " + binaryNumber);
+            Debug.Log("BinaryNumberInputted: " + inputBinary2);
 
-            if (binaryNumber == "01100010") // verifies the binary number inputted based on the letter provided.
+            if (inputBinary2 == "01100010") // verifies the binary number inputted based on the letter provided.
             {
                 Debug.Log("Valid binary code for 'b'");
-                ShowImage(VerificationImageA1);
+                VerificationImageA1.gameObject.SetActive(true);
             }
-            else if (binaryNumber == "01110010") // verifies the binary number inputted based on the letter provided.
+            else if (inputBinary2 == "01110010") // verifies the binary number inputted based on the letter provided.
             {
                 Debug.Log("Valid binary code for 'r'");
-                ShowImage(VerificationImageA2);
+                VerificationImageA2.gameObject.SetActive(true);
             }
             else
             {
