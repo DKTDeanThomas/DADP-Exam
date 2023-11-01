@@ -10,6 +10,7 @@ public class Hint : MonoBehaviour
     [SerializeField] private Button hintButton2;
     [SerializeField] private Button hintButton3;
     [SerializeField] private Button hintButton4;
+    [SerializeField] private Button hintButton5;//hint for the letter i in the name
 
     [Header("HintNumbers")]
     [SerializeField] private float hintNumber = 3;
@@ -17,6 +18,8 @@ public class Hint : MonoBehaviour
     [SerializeField] private float hintNumber2 = 1;
     [SerializeField] private float hintNumber3 = 2;
     [SerializeField] private float hintNumber4 = 1;
+    [SerializeField] private float hintNumber5 = 3;
+    
 
 
     [Header ("Hints Texts")]
@@ -25,6 +28,7 @@ public class Hint : MonoBehaviour
     [SerializeField] private Text hintText2;
     [SerializeField] private Text hintText3;
     [SerializeField] private Text hintText4;
+    [SerializeField] private Text hintText5;//hint text for the letter i of the Name;
 
 
 
@@ -40,6 +44,8 @@ public class Hint : MonoBehaviour
         FourthHintUsedUp();
         hintText4.text = "Hint:" + hintNumber4.ToString();
         LastLetterHintUsedUp();
+        hintText5.text = "Hint:" + hintNumber5.ToString();
+        FifthHintUsedUp();
     }
     public void FirstHintUsed( float hintValue)
     {
@@ -59,7 +65,7 @@ public class Hint : MonoBehaviour
         }
         else
         {
-            hintButton.gameObject.SetActive(true);
+            hintButton.gameObject.SetActive(false);
         }
     }
 
@@ -121,7 +127,7 @@ public class Hint : MonoBehaviour
             Debug.Log("all hints for this letter have been used up");
         }
     }
-    
+  
     public void LastLetterHintUsed(float LastLetterVal)
     {
         LastLetterVal = 1;
@@ -137,6 +143,24 @@ public class Hint : MonoBehaviour
         {
             hintButton4.gameObject.SetActive(false);
             Debug.Log("all hints for letter have been used up");
+        }
+    }
+
+    public void FifthHintUsed(float hintVal1)
+    {
+        hintVal1 = 1;
+        hintNumber5 -= hintVal1;
+        hintText5.text = "Hint: " + hintNumber5.ToString();
+        Debug.Log("one hint has been used for the letter i ");
+        FifthHintUsedUp();
+    }
+
+    public void FifthHintUsedUp()
+    {
+        if (hintNumber5 == 0)
+        {
+            hintButton5.gameObject.SetActive(false);
+            Debug.Log("sorry, the letter i hints have all been used up");
         }
     }
 }

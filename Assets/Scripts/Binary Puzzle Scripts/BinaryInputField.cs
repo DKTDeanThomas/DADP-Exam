@@ -13,6 +13,7 @@ public class BinaryInputField : MonoBehaviour
     [SerializeField] private InputField inputField3;
     [SerializeField] private InputField inputField4;
     [SerializeField] private InputField inputField5;
+    [SerializeField] private InputField inputField6;//for the location search field
 
     [Header("Script Reference")]
     [SerializeField] private BinaryPuzzle binaryPuzzle;
@@ -20,6 +21,7 @@ public class BinaryInputField : MonoBehaviour
     public void Start()
     {
         binaryPuzzle.GetComponent<BinaryPuzzle>();
+       
     }
     public void DisplayCodeInput()// will be attached to the EndEdit  event of the InputField
         {
@@ -33,10 +35,11 @@ public class BinaryInputField : MonoBehaviour
         string inputText3 = inputField3.text;
         Debug.Log("enteredcode:" + inputText3);
         string inputText4 = inputField4.text;
-        Debug.Log("entered code:" + inputText4);//input field for last letter
-
+        Debug.Log("entered code:" + inputText4);//input field for last letter for the surname
         string inputText5 = inputField5.text;
-        Debug.Log("entered surname code: " + inputText5);//input field for the surname addition code
+        Debug.Log("entered code: " + inputText5);//input field for the letter i of the name
+        string inputText6 = inputField6.text;
+        Debug.Log("entered name & surname:" + inputText6); //input field for the location reveal 
 
 
     }
