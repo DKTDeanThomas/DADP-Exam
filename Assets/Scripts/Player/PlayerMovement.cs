@@ -70,6 +70,7 @@ public class PlayerMovement : MonoBehaviour
 
         ApplyGravity();
         cC.Move(currentVelocity * Time.deltaTime);
+        
     }
 
     private void ApplyGravity()
