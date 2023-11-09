@@ -2153,9 +2153,18 @@ MonoBehaviour:
   - {fileID: 1355490499}
   - {fileID: 1468838421}
   cameraDurations:
-  - 3
-  - 1
+  - 4
+  - 8
+  - 6
+  cameraBlendTimes:
   - 0
+  - 4
+  - 2
+  - 0
+  playerMovement: {fileID: 1193156181}
+  playerCinemachineCamera: {fileID: 952550026}
+  cinemachineBrain: {fileID: 372206912}
+  defaultBlendTime: 0
 --- !u!65 &423637912
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5548,6 +5557,7 @@ MonoBehaviour:
   gravity: -9.81
   jumpHeight: 2
   focusPoint: {fileID: 1973365922}
+  canRotate: 1
 --- !u!143 &1193156182
 CharacterController:
   m_ObjectHideFlags: 0
@@ -5837,7 +5847,7 @@ MonoBehaviour:
   - m_Script
   m_LockStageInInspector: 
   m_StreamingVersion: 20170927
-  m_Priority: 10
+  m_Priority: 9
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
@@ -6133,7 +6143,7 @@ MonoBehaviour:
   - m_Script
   m_LockStageInInspector: 
   m_StreamingVersion: 20170927
-  m_Priority: 10
+  m_Priority: 9
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
@@ -6519,7 +6529,7 @@ MonoBehaviour:
   - m_Script
   m_LockStageInInspector: 
   m_StreamingVersion: 20170927
-  m_Priority: 10
+  m_Priority: 9
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
