@@ -7,15 +7,15 @@ public class CutsceneManager : MonoBehaviour
 {
     public CinemachineVirtualCamera[] virtualCameras;
     public float[] cameraDurations;
-    public float[] cameraBlendTimes; // Array to hold blend times for each transition
+    public float[] cameraBlendTimes;
     private int currentCameraIndex = 0;
     private bool cutscenePlayed = false;
 
-    public PlayerMovement playerMovement; // Reference to the player movement script
-    public CinemachineVirtualCamera playerCinemachineCamera; // Reference to the player's Cinemachine camera
-    private Transform originalFollowTarget; // To store the original follow target of the Cinemachine camera
-    public CinemachineBrain cinemachineBrain; // Reference to the CinemachineBrain
-    public float defaultBlendTime = 0.5f; // Default blend time for transitions
+    public PlayerMovement playerMovement;
+    public CinemachineVirtualCamera playerCinemachineCamera;
+    private Transform originalFollowTarget;
+    public CinemachineBrain cinemachineBrain;
+    public float defaultBlendTime = 0.5f;
 
     private void Start()
     {
@@ -30,13 +30,11 @@ public class CutsceneManager : MonoBehaviour
         if (cutscenePlayed) return;
         cutscenePlayed = true;
 
-        // Set the priority of all cutscene cameras to 10
         foreach (var vcam in virtualCameras)
         {
             vcam.Priority = 10;
         }
 
-        // Set blend time for the first transition
         if (virtualCameras.Length > 0 && cameraBlendTimes.Length > 0)
         {
             cinemachineBrain.m_DefaultBlend.m_Time = cameraBlendTimes[0];
@@ -45,10 +43,9 @@ public class CutsceneManager : MonoBehaviour
         if (playerMovement != null)
         {
             playerMovement.enabled = false;
-            playerMovement.canRotate = false; // Disable rotation
+            playerMovement.canRotate = false;
         }
 
-        // Detach the Cinemachine camera from the focus point
         if (playerCinemachineCamera != null)
         {
             originalFollowTarget = playerCinemachineCamera.Follow;
@@ -77,27 +74,23 @@ public class CutsceneManager : MonoBehaviour
         }
         else
         {
-            // Reset the priority of all cutscene cameras
             foreach (var vcam in virtualCameras)
             {
-                vcam.Priority = 9; // Or whatever the default priority is
+                vcam.Priority = 9;
             }
 
-            // Instantly switch back to the player camera
             if (playerCinemachineCamera != null)
             {
                 playerCinemachineCamera.Priority = 11;
-                cinemachineBrain.m_DefaultBlend.m_Time = defaultBlendTime; // Set blend time for the final transition
+                cinemachineBrain.m_DefaultBlend.m_Time = defaultBlendTime; 
             }
 
-            // Re-enable player controls and rotation after the last camera
             if (playerMovement != null)
             {
                 playerMovement.enabled = true;
-                playerMovement.canRotate = true; // Enable rotation
+                playerMovement.canRotate = true;
             }
 
-            // Reattach the Cinemachine camera to the focus point
             if (playerCinemachineCamera != null && originalFollowTarget != null)
             {
                 playerCinemachineCamera.Follow = originalFollowTarget;
