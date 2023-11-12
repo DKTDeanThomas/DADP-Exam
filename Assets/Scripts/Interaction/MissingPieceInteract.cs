@@ -14,12 +14,20 @@ public class MissingPieceInteract : MonoBehaviour, IInteractible
     public GameObject ExamineCam { get { return examineCamera; } }
     public GameObject Puzzle { get { return puzzle; } }
 
+    public string text;
     public GameObject Icon { get { return icon; } }
+
+    public CommsManager cM;
+
+    private void Start()
+    {
+        cM = GameObject.FindWithTag("DialogueManager").GetComponent<CommsManager>();
+    }
 
     public bool Interact(Interactor interact)
     {
         GameObject.FindWithTag("Player").GetComponent<PlayerInventory>().hasmapPiece = true;
-
+        cM.InteractComment(text);
         return true;
     }
 }

@@ -3,13 +3,11 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-<<<<<<< Updated upstream
-  tags: []
-=======
   tags:
-  - Obstacles
   - PostProcessing
->>>>>>> Stashed changes
+  - Orb particles
+  - DamageFromEnemy
+  - DialogueManager
   layers:
   - Default
   - TransparentFX
@@ -17,15 +15,9 @@ TagManager:
   - 
   - Water
   - UI
-<<<<<<< Updated upstream
-  - 
-  - 
-  - 
-=======
-  - Player
-  - Obstacles
   - Interactible
->>>>>>> Stashed changes
+  - NPC
+  - 
   - 
   - 
   - 

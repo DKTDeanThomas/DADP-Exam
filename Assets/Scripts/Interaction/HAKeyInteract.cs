@@ -16,9 +16,19 @@ public class HAKeyInteract : MonoBehaviour, IInteractible
 
     public GameObject Icon { get { return icon; } }
 
+    public CommsManager cM;
+
+    public string text;
+
+    private void Start()
+    {
+        cM = GameObject.FindWithTag("DialogueManager").GetComponent<CommsManager>();
+    }
+
     public bool Interact(Interactor interact)
     {
         GameObject.FindWithTag("Player").GetComponent<PlayerInventory>().hasstoragekeyHA = true;
+        cM.InteractComment(text);
         return true;
     }
 }

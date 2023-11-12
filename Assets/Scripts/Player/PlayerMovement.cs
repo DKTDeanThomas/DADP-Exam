@@ -27,6 +27,8 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private GameObject focusPoint;
 
+    public bool canRotate = true;
+
 
     private void Update()
     {
@@ -39,7 +41,7 @@ public class PlayerMovement : MonoBehaviour
 
         Vector3 moveDire = Vector3.zero;
 
-        if (direction.magnitude >= 0.1f)
+        if (direction.magnitude >= 0.1f && canRotate)
         {
             float tAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
             float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, tAngle, ref smoothVelocity, smoothTime);
@@ -70,6 +72,7 @@ public class PlayerMovement : MonoBehaviour
 
         ApplyGravity();
         cC.Move(currentVelocity * Time.deltaTime);
+        
     }
 
     private void ApplyGravity()

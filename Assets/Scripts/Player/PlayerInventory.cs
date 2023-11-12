@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour
 {
+    [Header("Other")]
+    public bool hasMap;
+
     [Header("HomeAffairs")]
     public bool hasmapPiece;
     public bool hasstoragekeyHA; // for storage room

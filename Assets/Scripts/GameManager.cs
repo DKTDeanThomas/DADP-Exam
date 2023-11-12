@@ -1,30 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public ObjectInspect OI;
+    public GameObject miniMap;
     [SerializeField] private Transform gameTransform;
     [SerializeField] private Transform piecePrefab;
-
-    private Transform selectedPiece;
 
     private List<Transform> pieces;
     private int emptyLocation;
     private int size;
-    private bool shuffling = false;
+    public bool shuffling = false;
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
         pieces = new List<Transform>();
         size = 3;
         CreateGamePieces(0.01f);
     }
-   
 
-public void CreateGamePieces(float gapThickness)
+
+    private void CreateGamePieces(float gapThickness)
     {
         float width = 1 / (float)size;
         for (int row = 0; row < size; row++)
@@ -62,39 +61,43 @@ public void CreateGamePieces(float gapThickness)
         }
 
     }
-
     // Update is called once per frame
     void Update()
     {
-
         // check for completion
-        if(!shuffling && CheckCompletion())
+        if (!shuffling && CheckCompletion())
         {
             shuffling = true;
             StartCoroutine(WaitShuffle(0.5f));
         }
+
         if (Input.GetMouseButtonDown(0))
         {
-            RaycastHit2D hit = Physics2D.Raycast(OI.zoomCamera.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
 
-            //Debug.Log(hit.collider.name);
-
-            if (hit)
+            if (Physics.Raycast(ray, out hit))
             {
+                Debug.Log(hit.collider.gameObject.name);
+                Debug.DrawRay(ray.origin, ray.direction * hit.distance, Color.green, 2.0f);
+
                 for (int i = 0; i < pieces.Count; i++)
                 {
                     if (pieces[i] == hit.transform)
                     {
-                        selectedPiece = pieces[i];
-                         if(SwapIfValid(i, -size, size )) { break; }
-                         if(SwapIfValid(i, +size, size )) { break; }
-                         if(SwapIfValid(i,-1, 0 )) { break; }
-                         if(SwapIfValid(i, +1, size -1 )) { break; }
+                        if (SwapIfValid(i, -size, size)) { break; }
+                        if (SwapIfValid(i, +size, size)) { break; }
+                        if (SwapIfValid(i, -1, 0)) { break; }
+                        if (SwapIfValid(i, +1, size - 1)) { break; }
                     }
                 }
             }
         }
     }
+
+
+
+
     private bool SwapIfValid(int i, int offset, int colCheck)
     {
         if (((i % size) != colCheck) && ((i + offset) == emptyLocation))
@@ -102,36 +105,38 @@ public void CreateGamePieces(float gapThickness)
             (pieces[i], pieces[i + offset]) = (pieces[i + offset], pieces[i]);
             (pieces[i].localPosition, pieces[i + offset].localPosition) = ((pieces[i + offset].localPosition, pieces[i].localPosition));
             emptyLocation = i;
-            return true;  
+            return true;
         }
         return false;
     }
 
-    private bool CheckCompletion()
+    public bool CheckCompletion()
     {
-        for (int i = 0; i < pieces.Count;i++)
+        for (int i = 0; i < pieces.Count; i++)
         {
             if (pieces[i].name != $"{i}")
             {
                 return false;
-            } 
+            }
         }
         return true;
     }
 
     private IEnumerator WaitShuffle(float duration)
     {
-      yield return new WaitForSeconds(duration);
+        yield return new WaitForSeconds(duration);
         Shuffle();
         shuffling = false;
 
-        Destroy(gameObject);
+        //GameObject.FindWithTag("Player").GetComponent<PlayerInventory>().hasMap = true;
+        //GameObject.FindWithTag("Player").GetComponent<Interactor>().minimapUI.SetActive(true);
+        // Enter a function to be triggered when the player is done
     }
-    private void Shuffle()
+    public void Shuffle()
     {
         int count = 0;
         int last = 0;
-        while (count < (size * size * size))
+        while (count < (size * size * size)) 
         {
             int rand = Random.Range(0, size * size);
 

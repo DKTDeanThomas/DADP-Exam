@@ -21,6 +21,9 @@ public class ObjectInspect : MonoBehaviour
     [SerializeField] private PostProcessVolume postProcessVol;
     [SerializeField] private DepthOfField dOF;
 
+    [SerializeField] private GameObject UIComments;
+    [SerializeField] private GameObject UIPrompts;
+
     public float zoomSpeed = 2.0f;
 
     void Start()
@@ -42,6 +45,8 @@ public class ObjectInspect : MonoBehaviour
 
     public void Pickup(Transform objectTransform)
     {
+        UIPrompts.SetActive(true);
+
         if (examineMode == false)
         {
             ExamineCam.SetActive(true);
@@ -58,12 +63,15 @@ public class ObjectInspect : MonoBehaviour
 
             examineMode = true;
 
+
         }
         
     }
 
     public void ZoomIn(GameObject ZoomCam)
     {
+        UIPrompts.SetActive(true);
+
         if (zoomMode == false)
         {
             zoomCam = ZoomCam;
@@ -75,7 +83,7 @@ public class ObjectInspect : MonoBehaviour
 
 
             Time.timeScale = 0;
-            dOF.active = true;
+            //dOF.active = true;
 
             zoomMode = true;
         }
@@ -100,6 +108,8 @@ public class ObjectInspect : MonoBehaviour
 
     void ExitExamineMode()
     {
+
+
         if (Input.GetMouseButtonDown(1) && examineMode)
         {
 
@@ -114,10 +124,18 @@ public class ObjectInspect : MonoBehaviour
             examineMode = false;
 
             GameObject.FindWithTag("Player").GetComponent<Interactor>().EnableRaycast();
-            GameObject.FindWithTag("Player").GetComponent<Interactor>().minimapUI.SetActive(true);
+
+            if (GameObject.FindWithTag("Player").GetComponent<PlayerInventory>().hasMap)
+            {
+                GameObject.FindWithTag("Player").GetComponent<Interactor>().minimapUI.SetActive(true);
+            }
+                
             GameObject.FindWithTag("Player").GetComponent<Interactor>().minicrosshairUI.SetActive(true);
 
             Destroy(clickedObject);
+
+            UIComments.SetActive(false);
+            UIPrompts.SetActive(false);
         }
 
         else if (Input.GetMouseButtonDown(1) && zoomMode)
@@ -132,8 +150,15 @@ public class ObjectInspect : MonoBehaviour
             zoomMode = false;
 
             GameObject.FindWithTag("Player").GetComponent<Interactor>().EnableRaycast();
-            GameObject.FindWithTag("Player").GetComponent<Interactor>().minimapUI.SetActive(true);
+
+            if (GameObject.FindWithTag("Player").GetComponent<PlayerInventory>().hasMap)
+            {
+                GameObject.FindWithTag("Player").GetComponent<Interactor>().minimapUI.SetActive(true);
+            }
             GameObject.FindWithTag("Player").GetComponent<Interactor>().minicrosshairUI.SetActive(true);
+
+            UIComments.SetActive(false);
+            UIPrompts.SetActive(false);
         }
 
     }

@@ -14,7 +14,8 @@ public class Interactor : MonoBehaviour
 
     public ObjectInspect OI;
 
-    [SerializeField] private GameObject interactUI;
+    [SerializeField] public GameObject interactUI;
+    [SerializeField] public GameObject talkUI;
     public GameObject minimapUI;
     public GameObject minicrosshairUI;
 
@@ -90,19 +91,25 @@ public class Interactor : MonoBehaviour
            
             canRaycast = false;
             teractible.Interact(this);
+           
 
 
         }
 
+        if (GetComponent<PlayerInventory>().hasMap)
+        {
+            minimapUI.SetActive(true);
+        }
+
     }
 
-    private void OutlineOn()
+    public void OutlineOn()
     {
         
         teractibleCollider.GetComponent<Outline>().enabled = true;
     }
 
-    private void OutlineOff()
+    public void OutlineOff()
     {
         if (teractibleCollider != null)
         {
