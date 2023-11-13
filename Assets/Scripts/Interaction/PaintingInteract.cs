@@ -11,12 +11,15 @@ public class PaintingInteract : MonoBehaviour, IInteractible
     [SerializeField] private GameObject examineCamera;
     [SerializeField] private GameObject puzzle;
     [SerializeField] private GameObject icon;
+    [SerializeField] private GameObject InventItem;
+
     public bool Inspect { get { return inspect; } }
     public bool Examine { get { return examine; } }
     public GameObject ExamineCam { get { return examineCamera; } }
     public GameObject Puzzle { get { return puzzle; } }
 
     public GameObject Icon { get { return icon; } }
+    public GameObject InventoryItem { get { return InventItem; } }
 
     public GameObject mainCam;
     public GameObject examCam;

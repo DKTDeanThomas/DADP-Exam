@@ -14,6 +14,8 @@ public interface IInteractible
 
     GameObject Puzzle { get; }
 
+    //GameObject InventoryItem { get; }
+
     public bool Interact(Interactor interact);
 
     

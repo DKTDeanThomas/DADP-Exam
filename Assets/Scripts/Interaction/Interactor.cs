@@ -72,7 +72,10 @@ public class Interactor : MonoBehaviour
             DisableInteractUI();
             OutlineOff();
 
-            minimapUI.SetActive(false);
+            if (GetComponent<PlayerInventory>().hasMap)
+            {
+                minimapUI.SetActive(false);
+            }
             minicrosshairUI.SetActive(false);
 
             // If you want to pick up the item
@@ -80,6 +83,7 @@ public class Interactor : MonoBehaviour
             {
                 Inspect(teractibleTransform);
                 teractible.Icon.SetActive(false);
+                //teractible.InventoryItem.SetActive(true);
             }
 
             // If you want to zoom in

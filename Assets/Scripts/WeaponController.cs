@@ -23,10 +23,11 @@ public class WeaponController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(1))
         {
             if (CanAttack = true)
             {
+                Dagger.SetActive(true);
                 DaggerAttack();
             }
         }
@@ -41,6 +42,7 @@ public class WeaponController : MonoBehaviour
         Daggeranim.SetTrigger("Slash");
         AudioSource ac = GetComponent<AudioSource>();
         ac.PlayOneShot(DaggerSound);
+        Dagger.SetActive(true);
        
        
        
@@ -54,6 +56,7 @@ public class WeaponController : MonoBehaviour
     {
         yield return new WaitForSeconds(AttackCooldown);
         CanAttack = true;
+        Dagger.SetActive(false);
         
     }
 

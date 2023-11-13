@@ -40,7 +40,6 @@ public class DoorInteractHA2 : MonoBehaviour, IInteractible
 
 
         }
-
         GameObject.FindWithTag("Player").GetComponent<Interactor>().EnableRaycast();
         GameObject.FindWithTag("Player").GetComponent<Interactor>().minimapUI.SetActive(true);
         GameObject.FindWithTag("Player").GetComponent<Interactor>().minicrosshairUI.SetActive(true);

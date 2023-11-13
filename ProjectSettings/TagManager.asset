@@ -8,6 +8,7 @@ TagManager:
   - Orb particles
   - DamageFromEnemy
   - DialogueManager
+  - InteractParticle
   layers:
   - Default
   - TransparentFX
