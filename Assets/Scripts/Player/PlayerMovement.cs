@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
+
 
 public class PlayerMovement : MonoBehaviour
 {
     public CharacterController cC;
     public Transform cam;
+    public CinemachineVirtualCamera cinemachineVirtualCam;
 
     [SerializeField] public float walkSpeed = 6f;
     [SerializeField] public float sprintSpeed = 12f;
@@ -29,9 +32,17 @@ public class PlayerMovement : MonoBehaviour
 
     public bool canRotate = true;
 
+    private bool isMovementLocked = false;
+
+    public void LockMovement(bool shouldLock)
+    {
+        isMovementLocked = shouldLock;
+    }
+
 
     private void Update()
     {
+        if (!enabled || isMovementLocked) return;
         float hz = Input.GetAxisRaw("Horizontal");
         float vt = Input.GetAxisRaw("Vertical");
         Vector3 direction = new Vector3 (hz, 0f, vt).normalized;
@@ -121,4 +132,21 @@ public class PlayerMovement : MonoBehaviour
 
 
     }
+
+
+    public void SwitchCameraPriority(CinemachineVirtualCamera otherCamera, bool isDialogueActive)
+    {
+    if (isDialogueActive)
+    {
+        cinemachineVirtualCam.Priority = 9;
+        otherCamera.Priority = 10;
+    }
+    else
+    {
+        cinemachineVirtualCam.Priority = 10;
+        otherCamera.Priority = 9;
+    }
+    }
+    
+
 }
