@@ -1,3 +1,4 @@
+using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
 {
     public CharacterController cC;
     public Transform cam;
+    public CinemachineVirtualCamera cinemachineVirtualCam;
 
     [SerializeField] public float walkSpeed = 6f;
     [SerializeField] public float sprintSpeed = 12f;
@@ -32,10 +34,18 @@ public class PlayerMovement : MonoBehaviour
 
     public bool canRotate = true;
 
+    private bool isMovementLocked = false;
+
+    public void LockMovement(bool shouldLock)
+    {
+        isMovementLocked = shouldLock;
+    }
+
 
     private void Update()
     {
         Waypoints();
+        if (!enabled || isMovementLocked) return;
         float hz = Input.GetAxisRaw("Horizontal");
         float vt = Input.GetAxisRaw("Vertical");
         Vector3 direction = new Vector3(hz, 0f, vt).normalized;
@@ -69,7 +79,7 @@ public class PlayerMovement : MonoBehaviour
 
         Vector3 currentVelocity = moveDire * currentSpeed;
 
-        if (Input.GetKey(KeyCode.J) && canJump)
+        if (Input.GetButtonDown("Jump") && canJump)
         {
             Jump();
         }
@@ -119,6 +129,20 @@ public class PlayerMovement : MonoBehaviour
             transform.localScale = playerScale;
             transform.position = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
             canCrouch = true;
+        }
+    }
+
+    public void SwitchCameraPriority(CinemachineVirtualCamera otherCamera, bool isDialogueActive)
+    {
+        if (isDialogueActive)
+        {
+            cinemachineVirtualCam.Priority = 9;
+            otherCamera.Priority = 10;
+        }
+        else
+        {
+            cinemachineVirtualCam.Priority = 10;
+            otherCamera.Priority = 9;
         }
     }
 

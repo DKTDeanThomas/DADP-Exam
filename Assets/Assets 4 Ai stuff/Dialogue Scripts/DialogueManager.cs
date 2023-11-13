@@ -21,6 +21,12 @@ public class DialogueManager : MonoBehaviour
 
     public GameObject playerCamera;
 
+
+    private bool showingPlayerResponses = false;
+
+    public TMP_Text skipText;
+    public TMP_Text nextText;
+
     private void Awake()
     {
         if (Instance == null)
@@ -37,32 +43,42 @@ public class DialogueManager : MonoBehaviour
     {
         currentNPC = npc;
         currentDialogueIndex = 0;
-        DisplayDialogue();
+        StartCoroutine(OpenDialoguePanel());
+        npc.StartInteraction();
+        if (npc.playerMovement != null)
+        {
+            npc.playerMovement.LockMovement(true);
+        }
     }
 
     public void DisplayDialogue()
     {
-    dialoguePanel.SetActive(true);
-    npcText.gameObject.SetActive(true);
-    npcText.text = currentNPC.dialogue[currentDialogueIndex].npcLine;
+        isNPCTextCompleted = false;
+        dialoguePanel.SetActive(true);
+        npcText.gameObject.SetActive(true);
+        npcText.text = currentNPC.dialogue[currentDialogueIndex].npcLine;
+        skipText.gameObject.SetActive(true);
+        nextText.gameObject.SetActive(false);
 
-    StartCoroutine(TypeSentence(currentNPC.dialogue[currentDialogueIndex].npcLine));
+        StartCoroutine(TypeSentence(currentNPC.dialogue[currentDialogueIndex].npcLine));
 
-    if (currentNPC.dialogue[currentDialogueIndex].playerResponses.Length == 0)
-    {
-        StartCoroutine(EndDialogueAfterDelay());
-    }
-    else
-    {
-        foreach (var button in playerButtons)
+        if (currentNPC.dialogue[currentDialogueIndex].playerResponses.Length == 0)
         {
-            button.SetActive(false);
+            StartCoroutine(EndDialogueAfterDelay());
         }
-    }
+        else
+        {
+            foreach (var button in playerButtons)
+            {
+                button.SetActive(false);
+            }
+        }
     }
 
     public void PlayerResponse(int index)
     {
+        isNPCTextCompleted = false;
+        showingPlayerResponses = false;
         currentDialogueIndex = currentNPC.dialogue[currentDialogueIndex].nextDialogueIndices[index];
         if (currentDialogueIndex != -1)
         {
@@ -76,72 +92,128 @@ public class DialogueManager : MonoBehaviour
 
     public void EndDialogue()
     {
-    isNPCTextCompleted = false;
-    dialoguePanel.SetActive(false);
-    currentNPC = null;
-    currentDialogueIndex = 0;
-        playerCamera.SetActive(true);
-        GameObject.FindWithTag("Player").GetComponent<PlayerMovement>().enabled = true;
+        isNPCTextCompleted = false;
+        StartCoroutine(CloseDialoguePanel());
+        currentNPC.EndInteraction();
+        if (currentNPC.playerMovement != null)
+        {
+            currentNPC.playerMovement.LockMovement(false);
+        }
+
+        //GameObject.FindWithTag("Player").GetComponent<PlayerMovement>().enabled = true;
         GameObject.FindWithTag("Player").GetComponent<Interactor>().minicrosshairUI.SetActive(true);
+
+        currentNPC = null;
+        currentDialogueIndex = 0;
     }
 
     private void Update()
     {
-    if (Input.GetKeyDown(KeyCode.Mouse1) && dialoguePanel.activeInHierarchy)
-    {
-        if (!isNPCTextCompleted)
+        if (Input.GetKeyDown(KeyCode.Return) && dialoguePanel.activeInHierarchy)
         {
-            StopAllCoroutines();
-            npcText.text = currentNPC.dialogue[currentDialogueIndex].npcLine;
-            isNPCTextCompleted = true;
+            if (!isNPCTextCompleted && !showingPlayerResponses)
+            {
+                StopAllCoroutines();
+                npcText.text = currentNPC.dialogue[currentDialogueIndex].npcLine;
+                isNPCTextCompleted = true;
+                skipText.gameObject.SetActive(false);
+                nextText.gameObject.SetActive(true);
+            }
+            else if (isNPCTextCompleted && !showingPlayerResponses)
+            {
+                ShowPlayerResponses();
+            }
+            else if (showingPlayerResponses)
+            {
+
+            }
         }
-        else
-        {
-            ShowPlayerResponses();
-        }
-    }
     }
 
     private IEnumerator TypeSentence(string sentence)
     {
-    npcText.text = "";
-    foreach (char letter in sentence.ToCharArray())
-    {
-        if (Input.GetKeyDown(KeyCode.Mouse1))
+        npcText.text = "";
+        foreach (char letter in sentence.ToCharArray())
         {
-                Debug.Log("Pressed");
-            npcText.text = sentence;
-            isNPCTextCompleted = true;
-            ShowPlayerResponses();
-            yield break;
+            npcText.text += letter;
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                npcText.text = sentence;
+                skipText.gameObject.SetActive(false);
+                nextText.gameObject.SetActive(true);
+                yield break;
+            }
+            yield return new WaitForSeconds(typingSpeed);
         }
-        npcText.text += letter;
-        yield return new WaitForSeconds(typingSpeed);
-    }
-    isNPCTextCompleted = true;
+        isNPCTextCompleted = true;
+        skipText.gameObject.SetActive(false);
+        nextText.gameObject.SetActive(true);
     }
 
     private void ShowPlayerResponses()
     {
-    npcText.gameObject.SetActive(false);
+        if (currentNPC.dialogue[currentDialogueIndex].playerResponses.Length > 0)
+        {
+            showingPlayerResponses = true;
+            npcText.gameObject.SetActive(false);
+            nextText.gameObject.SetActive(false);
+            nextText.gameObject.SetActive(false);
+            skipText.gameObject.SetActive(false);
 
-    for (int i = 0; i < playerButtons.Length; i++)
-    {
-        if (i < currentNPC.dialogue[currentDialogueIndex].playerResponses.Length)
-        {
-            playerButtons[i].SetActive(true);
-            playerResponses[i].text = currentNPC.dialogue[currentDialogueIndex].playerResponses[i];
+            UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
+
+            for (int i = 0; i < playerButtons.Length; i++)
+            {
+                if (i < currentNPC.dialogue[currentDialogueIndex].playerResponses.Length)
+                {
+                    playerButtons[i].SetActive(true);
+                    playerResponses[i].text = currentNPC.dialogue[currentDialogueIndex].playerResponses[i];
+                }
+                else
+                {
+                    playerButtons[i].SetActive(false);
+                }
+            }
         }
-        else
-        {
-            playerButtons[i].SetActive(false);
-        }
-    }
     }
 
     IEnumerator EndDialogueAfterDelay()
     {
-    yield return new WaitForSeconds(2.0f);
-    EndDialogue();
+        yield return new WaitForSeconds(2.0f);
+        EndDialogue();
+    }
+
+    IEnumerator OpenDialoguePanel()
+    {
+        dialoguePanel.SetActive(true);
+        dialoguePanel.transform.localScale = Vector3.zero;
+        Vector3 targetScale = new Vector3(1, 1, 1);
+        float duration = 0.5f;
+
+        for (float t = 0; t < 1; t += Time.deltaTime / duration)
+        {
+            dialoguePanel.transform.localScale = Vector3.Lerp(Vector3.zero, targetScale, t);
+            yield return null;
+        }
+
+        dialoguePanel.transform.localScale = targetScale;
+        DisplayDialogue();
+    }
+
+
+    IEnumerator CloseDialoguePanel()
+    {
+        Vector3 initialScale = dialoguePanel.transform.localScale;
+        Vector3 targetScale = Vector3.zero;
+        float duration = 0.5f;
+
+        for (float t = 0; t < 1; t += Time.deltaTime / duration)
+        {
+            dialoguePanel.transform.localScale = Vector3.Lerp(initialScale, targetScale, t);
+            yield return null;
+        }
+
+        dialoguePanel.transform.localScale = targetScale;
+        dialoguePanel.SetActive(false);
     }
 }
