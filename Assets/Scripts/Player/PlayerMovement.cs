@@ -6,6 +6,11 @@ using Cinemachine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public static PlayerMovement instance;
+
+    public float health = 100f;
+    public float currency = 20;
+
     public CharacterController cC;
     public Transform cam;
     public CinemachineVirtualCamera cinemachineVirtualCam;
@@ -33,6 +38,18 @@ public class PlayerMovement : MonoBehaviour
     public bool canRotate = true;
 
     private bool isMovementLocked = false;
+
+    void Awake() 
+    {
+    if (instance == null) 
+    {
+        instance = this;
+    } 
+    else if (instance != this) 
+    {
+        Destroy(gameObject);
+    }
+    }
 
     public void LockMovement(bool shouldLock)
     {
