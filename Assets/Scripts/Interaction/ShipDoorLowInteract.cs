@@ -21,6 +21,8 @@ public class ShipDoorLowInteract : MonoBehaviour, IInteractible
 
     public string text;
 
+    public Animator animator;
+
     private void Start()
     {
         cM = GameObject.FindWithTag("DialogueManager").GetComponent<CommsManager>();
@@ -30,8 +32,7 @@ public class ShipDoorLowInteract : MonoBehaviour, IInteractible
     {
         if (GameObject.FindWithTag("Player").GetComponent<PlayerInventory>().hasshipKey1 == true && GameObject.FindWithTag("Player").GetComponent<PlayerInventory>().hasshipKey2 == true)
         {
-            //Animator animator = GetComponent<Animator>();
-            //animator.SetBool("isOpen", true);
+            animator.SetBool("isOpen", true);
 
             MeshCollider collider = GetComponent<MeshCollider>();
             collider.enabled = false;
@@ -45,6 +46,11 @@ public class ShipDoorLowInteract : MonoBehaviour, IInteractible
         }
 
 
+        else
+        {
+            GetComponent<NPCInteractable>().StartDialogue();
+
+        }
 
 
         GameObject.FindWithTag("Player").GetComponent<Interactor>().EnableRaycast();

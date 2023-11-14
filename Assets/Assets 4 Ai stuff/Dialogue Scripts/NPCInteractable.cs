@@ -21,6 +21,7 @@ public class NPCInteractable : MonoBehaviour
 
     public CinemachineVirtualCamera npcCamera;
 
+
     private void Update()
     {
         if (playerInRange)

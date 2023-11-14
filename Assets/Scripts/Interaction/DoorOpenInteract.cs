@@ -20,7 +20,7 @@ public class DoorOpenInteract : MonoBehaviour, IInteractible
 
     public bool Interact(Interactor interact)
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(2);
 
         return true;
     }

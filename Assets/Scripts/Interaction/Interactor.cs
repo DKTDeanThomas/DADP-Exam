@@ -37,10 +37,13 @@ public class Interactor : MonoBehaviour
                     teractibleCollider = hit.collider;
                     teractible = hit.collider.GetComponent<IInteractible>();
 
-                    teractibleCamera = teractible.ExamineCam;
+                   
 
                     if (teractible != null)
                     {
+                        teractibleCamera = teractible.ExamineCam;
+                        teractibleCamera = teractible.ExamineCam != null ? teractible.ExamineCam : teractibleCamera;
+
                         OutlineOn();
                         EnableInteractUI();
                         TryInteract();
@@ -109,16 +112,25 @@ public class Interactor : MonoBehaviour
 
     public void OutlineOn()
     {
-        
-        teractibleCollider.GetComponent<Outline>().enabled = true;
+        if (teractibleCollider != null)
+        {
+            var outline = teractibleCollider.GetComponent<Outline>();
+            if (outline != null)
+            {
+                outline.enabled = true;
+            }
+        }
     }
 
     public void OutlineOff()
     {
         if (teractibleCollider != null)
         {
-            
-            teractibleCollider.GetComponent<Outline>().enabled = false;
+            var outline = teractibleCollider.GetComponent<Outline>();
+            if (outline != null)
+            {
+                outline.enabled = false;
+            }
         }
     }
 

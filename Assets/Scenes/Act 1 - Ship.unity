@@ -7950,9 +7950,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bccbce6407b48ad469e0287b8f0afbea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasMap: 0
   hasmapPiece: 0
   hasstoragekeyHA: 0
   hascomputerkeyHA: 0
+  hasshipKey1: 0
+  hasshipKey2: 0
+  hasLamp: 0
+  interactParticlesList: []
+  Lamp: {fileID: 0}
 --- !u!114 &402794696
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7973,6 +7979,7 @@ MonoBehaviour:
   teractibleCamera: {fileID: 0}
   OI: {fileID: 1574210731}
   interactUI: {fileID: 505619380}
+  talkUI: {fileID: 0}
   minimapUI: {fileID: 1157117703}
   minicrosshairUI: {fileID: 887455488}
   canRaycast: 1
@@ -7990,6 +7997,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cC: {fileID: 402794698}
   cam: {fileID: 1574210732}
+  cinemachineVirtualCam: {fileID: 0}
   walkSpeed: 12
   sprintSpeed: 15
   crouchSpeed: 0.1
@@ -7998,6 +8006,17 @@ MonoBehaviour:
   gravity: -20
   jumpHeight: 2
   focusPoint: {fileID: 184676170}
+  canRotate: 1
+  Checkpoint1: {fileID: 0}
+  Checkpoint2: {fileID: 0}
+  Checkpoint3: {fileID: 0}
+  Checkpoint4: {fileID: 0}
+  Checkpoint5: {fileID: 0}
+  Checkpoint1Dist: {fileID: 0}
+  Checkpoint2Dist: {fileID: 0}
+  Checkpoint3Dist: {fileID: 0}
+  Checkpoint4Dist: {fileID: 0}
+  Checkpoint5Dist: {fileID: 0}
 --- !u!143 &402794698
 CharacterController:
   m_ObjectHideFlags: 0
@@ -26923,7 +26942,7 @@ MonoBehaviour:
   m_VerticalAxis:
     Value: 0
     m_SpeedMode: 0
-    m_MaxSpeed: 400
+    m_MaxSpeed: 200
     m_AccelTime: 0.1
     m_DecelTime: 0.1
     m_InputAxisName: Mouse Y
@@ -26947,7 +26966,7 @@ MonoBehaviour:
   m_HorizontalAxis:
     Value: 0
     m_SpeedMode: 0
-    m_MaxSpeed: 400
+    m_MaxSpeed: 200
     m_AccelTime: 0.1
     m_DecelTime: 0.1
     m_InputAxisName: Mouse X
@@ -30142,6 +30161,8 @@ MonoBehaviour:
   zoomMode: 0
   postProcessVol: {fileID: 0}
   dOF: {fileID: 0}
+  UIComments: {fileID: 0}
+  UIPrompts: {fileID: 0}
   zoomSpeed: 2
 --- !u!4 &1574210732
 Transform:

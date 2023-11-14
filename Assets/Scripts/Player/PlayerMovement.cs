@@ -5,9 +5,12 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
+
+    public static PlayerMovement instance;
     public CharacterController cC;
     public Transform cam;
     public CinemachineVirtualCamera cinemachineVirtualCam;
@@ -20,6 +23,8 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private float gravity = -9.81f;
     [SerializeField] private float jumpHeight = 2f;
+
+   
 
     private Vector3 velocity;
     private bool canJump = false;
@@ -41,6 +46,17 @@ public class PlayerMovement : MonoBehaviour
         isMovementLocked = shouldLock;
     }
 
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
+    }
 
     private void Update()
     {
@@ -152,11 +168,11 @@ public class PlayerMovement : MonoBehaviour
     public GameObject Checkpoint4;
     public GameObject Checkpoint5;
 
-    public TMP_Text Checkpoint1Dist;
-    public TMP_Text Checkpoint2Dist;
-    public TMP_Text Checkpoint3Dist;
-    public TMP_Text Checkpoint4Dist;
-    public TMP_Text Checkpoint5Dist;
+    public Text Checkpoint1Dist;
+    public Text Checkpoint2Dist;
+    public Text Checkpoint3Dist;
+    public Text Checkpoint4Dist;
+    public Text Checkpoint5Dist;
 
 
 
@@ -167,7 +183,7 @@ public class PlayerMovement : MonoBehaviour
         {
             float chk1 = Vector3.Distance(Checkpoint1.transform.position, transform.position);
             chk1 = Mathf.RoundToInt(chk1);
-            Checkpoint1Dist.text = "Meters from Checkpoint" + chk1;
+            Checkpoint1Dist.text = "Next Destination " + chk1 + " m";
 
             if (chk1 <= 3)
             {
@@ -182,7 +198,7 @@ public class PlayerMovement : MonoBehaviour
         {
             float dist = Vector3.Distance(Checkpoint2.transform.position, transform.position);
             dist = Mathf.RoundToInt(dist);
-            Checkpoint2Dist.text = "Meters from next Checkpoint" + dist;
+            Checkpoint2Dist.text = "Next Destination: " + dist + " m";
             if (dist <= 2)
             {
                 Destroy(Checkpoint2);
@@ -196,7 +212,7 @@ public class PlayerMovement : MonoBehaviour
         {
             float distance = Vector3.Distance(Checkpoint3.transform.position, transform.position);
             distance = Mathf.RoundToInt(distance);
-            Checkpoint3Dist.text = "Meters from Checkpoint" + distance;
+            Checkpoint3Dist.text = "Next Destination: " + distance + " m";
 
             if (distance <= 3)
             {
@@ -210,7 +226,7 @@ public class PlayerMovement : MonoBehaviour
         {
             float chk4 = Vector3.Distance(Checkpoint4.transform.position, transform.position);
             chk4 = Mathf.RoundToInt(chk4);
-            Checkpoint4Dist.text = "Meters from Checkpoint" + chk4;
+            Checkpoint4Dist.text = "Next Destination: " + chk4 + " m";
 
             if (chk4 <= 3)
             {
@@ -224,7 +240,7 @@ public class PlayerMovement : MonoBehaviour
         {
             float chk5 = Vector3.Distance(Checkpoint5.transform.position, transform.position);
             chk5 = Mathf.RoundToInt(chk5);
-            Checkpoint5Dist.text = "Meters from Checkpoint" + chk5;
+            Checkpoint5Dist.text = "Next Destination: " + chk5 + " m";
 
             if (chk5 <= 3)
             {
