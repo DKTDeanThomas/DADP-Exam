@@ -7,6 +7,7 @@ public class PauseMenu : MonoBehaviour
 {
     public GameObject pausePanel;
     private bool isPaused = false;
+    public GameObject promptPanel;
 
     void Start()
     {
@@ -28,9 +29,19 @@ public class PauseMenu : MonoBehaviour
         }
     }
 
-    public void ResumeGame()
+    public void ShowPanel()
+    {
+        pausePanel.SetActive(true);
+    }
+
+    public void HidePanel()
     {
         pausePanel.SetActive(false);
+    }
+
+    public void ResumeGame()
+    {
+        HidePanel();
         Time.timeScale = 1;
         isPaused = false;
     }
@@ -48,8 +59,18 @@ public class PauseMenu : MonoBehaviour
 
     private void PauseGame()
     {
-        pausePanel.SetActive(true);
+        ShowPanel();
         Time.timeScale = 0;
         isPaused = true;
+    }
+
+    public void PromptPanelShow()
+    {
+        promptPanel.SetActive(true);
+    }
+
+    public void PromptPanelHide()
+    {
+        promptPanel.SetActive(false);
     }
 }
